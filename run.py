@@ -1,4 +1,5 @@
 import gspread
+from pprint import pprint
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -53,6 +54,34 @@ def validate_date(values):
 
     return True
 
+def update_sales_worksheet(data):
+    """
+        update sale data and inset into the worksheet
+    """
+    print("updating sales worksheet...\n")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("Update of worksheet successful!")
 
-data = get_sales_data()
+def calculate_surplus_data(sales_row):
+    """
+    calculate the surplus
+    """
+    print("Calculating surplus data...\n")
+    stock = SHEET.worksheet("stock").get_all_values()
+    stock_row = stock[-1]
+    print (stock_row)
 
+
+
+
+def main():
+    """"
+    run the program functions
+    """
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    # update_sales_worksheet(data)
+    calculate_surplus_data(sales_data)
+
+main()
